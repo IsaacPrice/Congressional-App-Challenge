@@ -1,0 +1,19 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    background-color: rgb(26, 75, 222);
+    padding: 15px 100px 15px 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    gap: 5%;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-family: Roboto;
+}
