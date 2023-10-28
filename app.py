@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, f
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timezone, datetime
 import os
-
+ 
 # Configure the Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gayblackmenpenis'
@@ -195,6 +195,14 @@ def add():
         pass # Will be returning a workout through JSON
     else:
         return render_template('add.html')
+    
+@app.route('/add_goal', methods=["POST"])
+def add_goal():
+    pass
+
+@app.route('/add_workout', methods=["POST"])
+def add_workout():
+    pass
 
 
 @app.route('/stats', methods=['GET', 'POST'])

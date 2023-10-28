@@ -3,6 +3,28 @@
 {% block content %}
 
     <div class="dividereighth"></div>
-    <p>poopoo</p>
+    <h2>Add Goal / Workout</h2>
+
+    <div class="goal-workout">
+        <button id="goal">Goal</button>
+        <button id="workout">Workout</button>
+    </div>
+
+    <form id="goal-form" action="/add_goal" method="POST">
+        <label for="goal-name">Goal Name:</label>
+        <input type="text" id="goal-name" name="name" autocomplete="off" required>
+      
+        <label for="goal-description">Description:</label>
+        <textarea id="goal-description" name="description" required></textarea>
+      
+        <label for="goal-type">Type:</label>
+        <select id="goal-type" name="type">
+          <option value="steps">Steps</option>
+          <option value="exercise">Exercise</option>
+          <option value="weight">Weight</option>
+        </select>
+      
+        <button type="submit">Create Goal</button>
+      </form>
 
 {% endblock %}

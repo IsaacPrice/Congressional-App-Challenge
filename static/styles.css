@@ -80,6 +80,12 @@ button {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.478);
 }
 
+.goal-workout button {
+    width: 8vw;
+    height: 3vw;
+    font-size: large;
+}
+
 .dividerwhole {
     height: 80vh;
 }
@@ -133,6 +139,20 @@ form input {
     border-radius: 10px;
     border: 2px solid rgb(241, 241, 241);
     background-color: rgb(241, 241, 241);
+}
+
+form textarea, form select {
+    margin-bottom: 25px;
+    height: 3vh;
+    font-size: large;
+    border-radius: 10px;
+    border: 2px solid rgb(241, 241, 241);
+    background-color: rgb(241, 241, 241);
+    font-family: Roboto;
+}
+
+form textarea {
+    height: 5vh;
 }
 
 form button {
@@ -201,4 +221,12 @@ span {
     height: 100%;
     background-color: yellow;
     border-radius: 5px;
+}
+
+.goal-workout {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 75px;
 }
