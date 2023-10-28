@@ -146,6 +146,7 @@ label {
     margin-bottom: 5px;
 }
 
-.last-word {
-    color: yellow;
+span {
+    color: rgb(255, 225, 52);
+    text-shadow: 0 0 15px rgb(255, 236, 131);
 }

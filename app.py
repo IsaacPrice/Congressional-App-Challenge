@@ -1,16 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, Email, Length
+from flask import Flask, request, render_template, redirect, url_for, flash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
-class registration(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=8, max=24)])
-    password = StringField('Password', validators=[DataRequired(), Length(min=8, max=24)])
-    retype = StringField('Retype Password', validators=[DataRequired(), Length(min=8, max=24)])
-    submit = SubmitField('Submit')
 
 
 # TODO: Create the database, and the load it upon the file running
@@ -32,6 +24,11 @@ def register():
         retype = request.form.get("retype")
 
         # TODO: Do more checks about the inputs, and then add it to the database.
+
+        # Check for any empty parts of the form
+        if not username or not password or not retype:
+            flash('All fields are required!', 'error')
+            return redirect(url_for('index'))
 
         if len(password) < 8:
             error = "Password is too short."
