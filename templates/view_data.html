@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>View Data</h1>
+
+    <h2>Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Password</th>  <!-- Note: Passwords should be hashed and not normally displayed -->
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.password }}</td>  <!-- Same note as above -->
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Workouts</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>User ID</th>
+        </tr>
+        {% for workout in workouts %}
+            <tr>
+                <td>{{ workout.id }}</td>
+                <td>{{ workout.name }}</td>
+                <td>{{ workout.description }}</td>
+                <td>{{ workout.user_id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Exercises</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Workout ID</th>
+        </tr>
+        {% for exercise in exercises %}
+            <tr>
+                <td>{{ exercise.id }}</td>
+                <td>{{ exercise.name }}</td>
+                <td>{{ exercise.workout_id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Sets</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Weight</th>
+            <th>Reps</th>
+            <th>Exercise ID</th>
+        </tr>
+        {% for set in sets %}
+            <tr>
+                <td>{{ set.id }}</td>
+                <td>{{ set.weight }}</td>
+                <td>{{ set.reps }}</td>
+                <td>{{ set.exercise_id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+
+{% endblock %}

@@ -4,13 +4,13 @@ body {
 }
 
 header {
-    background-color: rgb(26, 75, 222);
+    background: linear-gradient(30deg, rgb(26, 75, 222), rgb(26, 79, 239));
     padding: 15px 50px;
     display: flex;
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.478);
     position: absolute;
-    width: calc(95% + 2px);
+    width: 95%;
 }
 
 header div {
@@ -190,6 +190,7 @@ span {
     display: flex;
     flex-direction: row;
     gap: 3vw;
+    position: relative;
 }
 
 .goal-widget {
@@ -229,4 +230,153 @@ span {
     gap: 15px;
     align-items: center;
     margin-bottom: 75px;
+}
+
+.form-container {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-exercise {
+    width: 50px;
+    height: 50px;
+}
+
+.remove-exercise {
+    height: 55px;
+}
+
+#exercises-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
+}
+
+.exercise-record {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(128, 128, 128, 0.388);
+    box-shadow: 0 0 15px rgba(128, 128, 128, 0.388);
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.exercise-record * {
+    margin: 5px;
+}
+
+.remove-set {
+    width: 45px;
+    height: 45px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.edit-button {
+    display: none;
+    background: #007bff;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-family: Roboto;
+}
+
+.widget-name-edit {
+    background-color: rgb(227, 227, 227);
+    border: none;
+    color: black;
+    font-size: x-large;
+    font-family: Roboto;
+    font-weight: 700;
+    width: auto;
+    margin: 15px;
+}
+
+.widget-description-edit {
+    background-color: rgb(227, 227, 227);
+    border: none;
+    color: gray;
+    font-size: large;
+    font-family: Roboto;
+    font-weight: 700;
+    width: auto;
+    margin: 10px;
+}
+
+.widget-current-edit, .widget-target-edit {
+    background-color: rgb(227, 227, 227);
+    border: none;
+    color: black;
+    font-family: Roboto;
+    font-size: medium;
+}
+
+
+#workout-container {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 100px;
+    gap: 1vw;
+    background-color: rgb(26, 75, 222);
+    border-radius: 50px;
+    transition: height 0.1s ease-out;
+    justify-content: safe;
+    width: 90%;
+    box-shadow: 0 0 10px rgb(26, 75, 222);
+}
+
+.workout-widget {
+    background-color: white;
+    padding: 25px;
+    box-shadow: 0 0 10px white;
+    border-radius: 15px;
+    width: 10vw;
+    height: 8vw;
+    transition: width 0.1s ease-out, padding 0.1s ease-out, height 0.1s ease-out;
+}
+
+.workout-widget h3 {
+    margin: 0;
+}
+
+.workout-widget.has-extra-details {
+    width: 15vw;
+    max-height: 30vw;
+    flex-shrink: 0;
+}
+
+footer {
+    height: 50vh;
+}
+
+table {
+    color: black;
+    font-family: Roboto;
+    font-size: medium;
+}
+
+table > * {
+    margin: 10px;
+}
+
+td {
+    font-size: small;
+}
+
+h4 {
+    font-family: roboto;
+    font-size: large;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid gray;
 }

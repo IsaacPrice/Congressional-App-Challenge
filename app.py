@@ -5,7 +5,7 @@ import os
  
 # Configure the Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'gayblackmenpenis'
+app.config['SECRET_KEY'] = 'jh1f4wey3asd4f8'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
@@ -13,15 +13,18 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
+    first_name = db.Column(db.String(20), unique=False, nullable=False)
+    last_name = db.Column(db.String(20), unique=False, nullable=False)
     password = db.Column(db.String(30), unique=False, nullable=False)
     workouts = db.relationship('Workout', backref='user', lazy=True)
 
 class Workout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(200))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # <-- This is the new line
     exercises = db.relationship('Exercise', backref='workout', lazy=True)
-
+    
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -30,8 +33,8 @@ class Exercise(db.Model):
 
 class Set(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    reps = db.Column(db.Integer)
-    weight = db.Column(db.Float)
+    weight = db.Column(db.Integer, nullable=False)
+    reps = db.Column(db.Integer, nullable=False)
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
 
 class Goal(db.Model):
@@ -125,11 +128,13 @@ def register():
     error = None
     if request.method == "POST":
         username = request.form.get("username")
+        first_name = request.form.get("first-name")
+        last_name = request.form.get("last-name")
         password = request.form.get("password")
         retype = request.form.get("retype")
 
         # Check for any empty parts of the form
-        if not username or not password or not retype:
+        if not username or not password or not retype or not first_name or not last_name:
             error = "All fields need filled out."
         
         # Verifies the password and retyped password are the same
@@ -141,6 +146,10 @@ def register():
             error = "Username is too long (max 20 characters)."
         elif len(password) > 30:
             error = "Password is too long (max 30 characters)."
+        elif len(first_name) > 20:
+            error = "First name is too long (max 20 characters)."
+        elif len(last_name) > 20:
+            error = "Last name is too long (max 20 characters)."
 
         # Check the database if the username is already in use
         used_username = db.session.query(User.username).filter_by(username=username).first()
@@ -188,6 +197,37 @@ def dash_info():
     goals_list = [goal.serialize() for goal in goals]
     return jsonify(goals=goals_list)
 
+@app.route('/get_workouts', methods=['GET'])
+def get_workouts():
+    workouts = Workout.query.filter_by(user_id=session['user_id']).all()
+    workout_list = []
+
+    for workout in workouts:
+        workout_data = {
+            'id': workout.id,
+            'name': workout.name,
+            'description': workout.description,
+            'exercises': []
+        }
+
+        for exercise in workout.exercises:  # Assuming an 'exercises' relationship in your Workout model
+            exercise_data = {
+                'name': exercise.name,
+                'sets': []
+            }
+
+            for set in exercise.sets:  # Assuming a 'sets' relationship in your Exercise model
+                set_data = {
+                    'reps': set.reps,
+                    'weight': set.weight
+                }
+                exercise_data['sets'].append(set_data)
+
+            workout_data['exercises'].append(exercise_data)
+
+        workout_list.append(workout_data)
+
+    return jsonify({'workouts': workout_list})
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -198,19 +238,51 @@ def add():
     
 @app.route('/add_goal', methods=["POST"])
 def add_goal():
-    pass
+    data = request.json
+    new_goal = Goal(user_id=session['user_id'], type=data['type'], name=data['name'], description=data['description'], target=data['value'], current=0)
+    db.session.add(new_goal)
+    db.session.commit()
+
+    return jsonify({'redirect_url': url_for('dashboard')})
+
+@app.route('/update_goal', methods=["GET", "POST"])
+def update_goal():
+    data = request.json
+    print(data)
+
+    goal = Goal.query.get(data['id'])
+    goal.name = data['name']
+    goal.description = data['description']
+    goal.target = data['target']
+    goal.current = data['current']
+
+    # Commit the changes
+    db.session.commit()
+
+    return jsonify({'redirect_url': url_for('dashboard')})
 
 @app.route('/add_workout', methods=["POST"])
 def add_workout():
-    pass
+    data = request.json
+    
+    new_workout = Workout(name=data['name'], description=data['description'], user_id=session['user_id'])
+    db.session.add(new_workout)
+    db.session.commit()
 
+    for exercise_data in data['exercises']:
+        print(exercise_data)
+        new_exercise = Exercise(name=exercise_data['name'], workout_id=new_workout.id)
+        db.session.add(new_exercise)
+        db.session.commit()
 
-@app.route('/stats', methods=['GET', 'POST'])
-def stats():
-    if request.method == 'POST':
-        pass # Will be requesting certain information about their workouts
-    else:
-        return render_template('stats.html')
+        for set_data in exercise_data['sets']:
+            print(set_data)
+            new_set = Set(weight=set_data['weight'], reps=set_data['reps'], exercise_id=new_exercise.id)
+            db.session.add(new_set)
+            
+    db.session.commit()
+
+    return jsonify({'redirect_url': url_for('dashboard')})
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -218,11 +290,28 @@ def profile():
         pass # The only things that this would be posting is updates to the users profile, probably through JSON
     else:
         return render_template('profile.html')
-    
+
+# DEBUG ROUTES
 @app.route('/clear')
 def clear_session():
     session.clear()
     return redirect(url_for('index'))
+
+@app.route('/view_data')
+def view_data():
+    # Query all data from the tables
+    users = User.query.all()
+    workouts = Workout.query.all()
+    exercises = Exercise.query.all()  # Fetch all exercises
+    sets = Set.query.all()  # Fetch all sets
+
+    return render_template(
+        'view_data.html', 
+        users=users, 
+        workouts=workouts,
+        exercises=exercises,  # Pass the exercises to the template
+        sets=sets  # Pass the sets to the template
+    )
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

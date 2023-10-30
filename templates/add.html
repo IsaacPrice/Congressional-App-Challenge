@@ -10,21 +10,68 @@
         <button id="workout">Workout</button>
     </div>
 
-    <form id="goal-form" action="/add_goal" method="POST">
-        <label for="goal-name">Goal Name:</label>
-        <input type="text" id="goal-name" name="name" autocomplete="off" required>
-      
-        <label for="goal-description">Description:</label>
-        <textarea id="goal-description" name="description" required></textarea>
-      
-        <label for="goal-type">Type:</label>
-        <select id="goal-type" name="type">
-          <option value="steps">Steps</option>
-          <option value="exercise">Exercise</option>
-          <option value="weight">Weight</option>
-        </select>
-      
-        <button type="submit">Create Goal</button>
-      </form>
+    <!--The form for creating a goal-->
+    <div id="goal-form-container" style="display: none;" class="form-container">
+        <form id="goal-form" action="/add_goal" method="POST">
+            <label for="goal-name">Goal Name:</label>
+            <input type="text" id="goal-name" name="name" autocomplete="off" required>
+        
+            <label for="goal-description">Description:</label>
+            <textarea id="goal-description" name="description" required></textarea>
+        
+            <label for="goal-type">Type:</label>
+            <select id="goal-type" name="type">
+                <option value="steps">Steps</option>
+                <option value="exercise">Exercise</option>
+                <option value="weight">Weight</option>
+            </select>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="goal-amount" required/>
+        
+            <button type="submit" id="ready">Create Goal</button>
+        </form>
+    </div>
+
+      <!--The form for creating a workout-->
+    <div id="workout-form-container" style="display: none;" class="form-container">
+        <form id="workout-form" action="/add_workout" method="POST">
+            <label>Workout Name:</label>
+            <input type="text" id="workout-name" name="name" required>
+        
+            <label>Description:</label>
+            <textarea id="workout-description" name="description" required></textarea>
+        
+            <label>Date:</label>
+            <input type="date" id="workout-date" name="date" required>
+        
+            <!-- Dynamic exercise container -->
+            <label>Exercises:</label>
+            <button id="add-exercise" target="_blank" action="_blank" type="button">+</button>
+
+            <!-- Exercises Container -->
+            <div id="exercises-container">
+                <!-- Initial exercise record -->
+                <div class="exercise-record">
+                    <button type="button" class="remove-exercise">Remove</button>
+
+                    <label>Exercise Name:</label>
+                    <input type="text" autocapitalize="off" name="exercise"/>
+
+                    <label>Sets:</label>
+                    <input type="number" class="sets" name="sets"/>
+                    
+                    <!-- Sets container for this exercise -->
+                    <div class="sets-container">
+                        <!-- Sets will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        
+            <button type="submit" id="finish">Add Workout</button>
+        </form>
+    </div>
+
+      <script src="../static/add.js"></script>
 
 {% endblock %}

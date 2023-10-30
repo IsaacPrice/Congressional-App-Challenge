@@ -20,7 +20,6 @@
             {% if 'user_id' in session %}
                 <a href="{{ url_for('dashboard')}}">Dashboard</a>
                 <a href="{{ url_for('add')}}">Add</a>
-                <a href="{{ url_for('stats')}}">Stats</a>
                 <a href="{{ url_for('profile')}}">Profile</a>
             {% else %} 
                 <a href="{{ url_for('register')}}">Sign Up</a>
